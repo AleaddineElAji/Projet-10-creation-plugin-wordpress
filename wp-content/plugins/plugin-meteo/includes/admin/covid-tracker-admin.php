@@ -106,15 +106,11 @@ require_once  __DIR__ . '/../Models/Data.php';
     }
     else{
         $communes = json_decode($communes, true);
-        //var_dump($coviddata);
-        $data = [$communes];
-        //var_dump($data);
         $import = new Data();
         $delete = new Data();
         $delete->deleteData();
-        
-        for ($i=0; $i < count($data) ; $i++) {   
-            $import->addData($data[$i]['code'], $data[$i]['nom']);
+        for ($i=0; $i < count($communes) ; $i++) {   
+            $import->addData($communes[$i]['code'], $communes[$i]['nom']);
         }
     }
     curl_close($curl);
