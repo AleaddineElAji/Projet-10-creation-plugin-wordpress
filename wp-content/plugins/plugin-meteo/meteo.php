@@ -35,51 +35,39 @@ function meteo_page(){
   require_once("includes/meteo-admin.php");
 }
 
+function initFunction(){
 
-function createTableCode(){
-  global $wpdb;
-  $query ='CREATE TABLE shortcode
-  (
-      id INT(6) PRIMARY KEY NOT NULL,
-      shortcode VARCHAR(30)
-  )';
-  $wpdb->query($query);
-}
-
-function deleteTableCode(){
-  global $wpdb;
-  $query ='DROP TABLE shortcode';
-  $wpdb->query($query);
-}
-
-function createTableCommunes(){
-  global $wpdb;
-  $query = 'CREATE TABLE communes
-  (
-      id INT(6) PRIMARY KEY NOT NULL,
-      code INT(6),
-      nom VARCHAR(30)
-  )';
-  $wpdb->query($query);
-}
-
-function deleteTableCommunes(){
-  global $wpdb;
-  $query = 'DROP TABLE communes';
-  $wpdb->query($query);
-}
-
-function curlalaedin(){
-  //Traitement des données
-  $curl = curl_init("https://geo.api.gouv.fr/communes");
-  curl_setopt($curl, CURLOPT_CAINFO,__DIR__.DIRECTORY_SEPARATOR.'/cert.cer' );
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  $communes = curl_exec($curl);
-// print_r($communes);
-  if($communes === false){
-      var_dump(curl_error($curl));
+  function createTableCode(){
+    global $wpdb;
+    $query ='CREATE TABLE shortcode
+    (
+        id INT(6) PRIMARY KEY NOT NULL,
+        shortcode VARCHAR(30)
+    )';
+    $wpdb->query($query);
   }
-  else{
+
+  function createTableCommunes(){
+    global $wpdb;
+    $query = 'CREATE TABLE communes
+    (
+        id INT(6) PRIMARY KEY NOT NULL,
+        code INT(6),
+        nom VARCHAR(30)
+    )';
+    $wpdb->query($query);
+  }
+
+  function curlalaedin(){
+    //Traitement des données
+    $curl = curl_init("https://geo.api.gouv.fr/communes");
+    curl_setopt($curl, CURLOPT_CAINFO,__DIR__.DIRECTORY_SEPARATOR.'/cert.cer' );
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $communes = curl_exec($curl);
+  // print_r($communes);
+    if($communes === false){
+      var_dump(curl_error($curl));
+    }else{
       $communes = json_decode($communes, true);
       global $wpdb;
       // $delete = new Data();
@@ -88,18 +76,29 @@ function curlalaedin(){
       //     $import->addData($communes[$i]['code'], $communes[$i]['nom']);
       // }
       foreach($communes as $commune){
-        $wpdb->addData($commune['code'], $commune['nom']);
+        // $wpdb->insert($commune['code'], $commune['nom']);
+        $wpdb->insert('communes', array('code' => $commune['code'],'nom' => $commune['nom'],));
       }
-
+    }
+    curl_close($curl);  
   }
-  curl_close($curl);  
 }
 
+function uninstallFunction(){
 
-// register_activation_hook( __FILE__, 'createTableCode' );
-// register_activation_hook( __FILE__, 'createTableCommunes' );
-// register_activation_hook( __FILE__, 'curlalaedin' );
+  function deleteTableCode(){
+    global $wpdb;
+    $query ='DROP TABLE shortcode';
+    $wpdb->query($query);
+  }
 
-// register_uninstall_hook( __FILE__, 'deleteTableCode' );
-// register_uninstall_hook( __FILE__, 'deleteTableCommunes' );
+  function deleteTableCommunes(){
+    global $wpdb;
+    $query = 'DROP TABLE communes';
+    $wpdb->query($query);
+  }
+}
 
+register_activation_hook( __FILE__, 'initFunction' );
+
+register_uninstall_hook( __FILE__, 'uninstallFunction' );
