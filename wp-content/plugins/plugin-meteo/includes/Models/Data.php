@@ -4,6 +4,33 @@ require_once 'Database.php';
 
 class Data extends Database
 {
+    
+    function createTableCode(){
+        $newTable = $this->connect()->prepare('CREATE TABLE shortcode
+        (
+            id INT(6) PRIMARY KEY NOT NULL,
+            shortcode VARCHAR(30)
+        )');
+        $newTable->execute();
+    }
+    function deleteTableCode(){
+        $newTable = $this->connect()->prepare('DELETE TABLE shortcode');
+        $newTable->execute();
+    }
+
+    function createTableCommunes(){
+        $newTable = $this->connect()->prepare('CREATE TABLE communes
+        (
+            id INT(6) PRIMARY KEY NOT NULL,
+            code INT(6),
+            nom VARCHAR(30)
+        )');
+        $newTable->execute();
+    }
+    function deleteTableCommunes(){
+        $newTable = $this->connect()->prepare('DELETE TABLE communes');
+        $newTable->execute();
+    }
 
     public function deleteData(){
         $supprimer = $this->connect()->prepare('DELETE From communes');
@@ -66,6 +93,8 @@ class Data extends Database
         return $dept;
         //var_dump($dept);
     }
+
+
 }
 
 
