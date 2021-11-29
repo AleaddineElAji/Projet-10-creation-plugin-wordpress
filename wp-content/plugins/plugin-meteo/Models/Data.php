@@ -5,7 +5,7 @@ require_once 'Database.php';
 class Data extends Database
 {
     
-    
+
 
     public function deleteData(){
         $supprimer = $this->connect()->prepare('DELETE From communes');
@@ -68,7 +68,6 @@ class Data extends Database
         return $dept;
         //var_dump($dept);
     }
-
 
 }
 
