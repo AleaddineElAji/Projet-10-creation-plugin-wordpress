@@ -1,4 +1,7 @@
+<?php 
 
+require_once  __DIR__ . '/../Models/Data.php'; 
+?>
 <head>
   <?php wp_head(); ?>
   <meta charset="UTF-8">
@@ -90,3 +93,29 @@
     </div>
 </section>    
 </body>
+
+<?php
+    //Traitement des données
+    $curl = curl_init("https://geo.api.gouv.fr/communes");
+    curl_setopt($curl, CURLOPT_CAINFO,__DIR__.'/cert.cer' );
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $communes = curl_exec($curl);
+
+    if($communes === false){
+        var_dump(curl_error($curl));
+    }
+    else{
+        $communes = json_decode($communes, true);
+        //var_dump($coviddata);
+        $data = [$communes];
+        //var_dump($data);
+        $import = new Data();
+        $delete = new Data();
+        $delete->deleteData();
+        
+        for ($i=0; $i < count($data) ; $i++) {   
+            $import->addData($data[$i]['code'], $data[$i]['nom']);
+        }
+    }
+    curl_close($curl);
+?>
