@@ -2,28 +2,9 @@
 
 require_once  __DIR__ . '/Models/Data.php'; 
 require_once  __DIR__ . '/Controllers/meteoController.php'; 
+ 
 
-
-//A l'installation du plugin on va faire en sorte qu'une table soit créé dans notre base de données si elle n'existe pas
-// global $wpdb;
-// $servername = $wpdb->dbhost;
-// $username = $wpdb->dbuser;
-// $password = $wpdb->dbpassword;
-// $dbname = $wpdb->dbname;
-// $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-// $sh = $conn->prepare( "DESCRIBE `communes`");
-// if ( !$sh->execute() ) {
-//   $sql = "CREATE TABLE communes (
-//     id INT(6) AUTO_INCREMENT PRIMARY KEY,
-//     code int(6) NOT NULL,
-//     nom VARCHAR(30) NOT NULL,
-//     )";
-//     $conn->exec($sql);
-//     $conn = null;
-// } 
-
-
- //Ajout de lien de notre plugin dans le menu latéral
+//Ajout de lien de notre plugin dans le menu latéral
 add_action( 'admin_menu', 'pluginLink' );
  
 function pluginLink()
@@ -37,11 +18,42 @@ function pluginLink()
     );
 }
 
-
 //Maintenant génération de l'intérieur de la page admin quand le slug est appelé
 function meteo_page(){
   require_once("admin/meteo-admin.php");
 }
+
+function createTableCode(){
+  $activObj = new Data();
+  $newTable = $activObj->connect()->prepare('CREATE TABLE shortcode
+  (
+      id INT(6) PRIMARY KEY NOT NULL,
+      shortcode VARCHAR(30)
+  )');
+  $newTable->execute();
+}
+function deleteTableCode(){
+  $activObj = new Data();
+  $newTable = $activObj->connect()->prepare('DELETE TABLE shortcode');
+  $newTable->execute();
+}
+
+function createTableCommunes(){
+  $activObj = new Data();
+  $newTable = $activObj->connect()->prepare('CREATE TABLE communes
+  (
+      id INT(6) PRIMARY KEY NOT NULL,
+      code INT(6),
+      nom VARCHAR(30)
+  )');
+  $newTable->execute();
+}
+function deleteTableCommunes(){
+  $activObj = new Data();
+  $newTable = $activObj->connect()->prepare('DELETE TABLE communes');
+  $newTable->execute();
+}
+
 
 register_activation_hook( __FILE__, 'createTableCode' );
 register_activation_hook( __FILE__, 'createTableCommunes' );
