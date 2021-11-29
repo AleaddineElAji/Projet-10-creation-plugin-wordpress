@@ -46,7 +46,7 @@ function createTableCode(){
 }
 function deleteTableCode(){
   $activObj = new Data();
-  $newTable = $activObj->connect()->prepare('DELETE TABLE shortcode');
+  $newTable = $activObj->connect()->prepare('DROP TABLE shortcode');
   $newTable->execute();
 }
 
@@ -62,7 +62,7 @@ function createTableCommunes(){
 }
 function deleteTableCommunes(){
   $activObj = new Data();
-  $newTable = $activObj->connect()->prepare('DELETE TABLE communes');
+  $newTable = $activObj->connect()->prepare('DROP TABLE communes');
   $newTable->execute();
 }
 
