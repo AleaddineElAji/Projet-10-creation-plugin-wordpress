@@ -8,6 +8,12 @@
     Author URI:   https://aleaddinee.promo-93.codeur.online/
     */
 
+
+
+    require_once  __DIR__ . '/model/Table.php'; 
+    require_once  __DIR__ . '/model/Data.php'; 
+
+    
     add_action('admin_menu','lienDeMenu');
 
     function lienDeMenu(){
@@ -15,122 +21,9 @@
             'La page de mon plugin', //Titre de ma page
             'Météo', //Lien dans le add_menu_page
             'manage_options',
-            plugin_dir_path(__FILE__).'admin/index.php'// L'adresse ou l'on doit attérir quand on clique sur le lien de menu
+            plugin_dir_path(__FILE__).'views/index.php'// L'adresse ou l'on doit attérir quand on clique sur le lien de menu
         );
     }
-
-    // require_once 'model/Table.php';
-
-    
-    // CLASS DATABSE
-
-    class Database{
-        public function __construct() {
-            add_action( 'plugins_loaded', array( $this, 'connect' ) );
-        }
-    
-        public function connect(){ //fonction de connextion à la base
-            try{
-                global $wpdb;
-                $servername = $wpdb->dbhost;
-                $username = $wpdb->dbuser;
-                $password = $wpdb->dbpassword;
-                $dbname = $wpdb->dbname;
-                $bdd = new PDO('mysql:host='.$servername.';dbname='.$dbname.';port=3306;charset=utf8', $username, $password);
-                return $bdd; 
-            }
-            catch(Exception $e){
-                die('Erreur : '.$e->getMessage());
-            }
-        }
-    }
-
-    // CLASS Table
-class Table extends Database{
-    public function __construct() {
-        add_action( 'plugins_loaded', array( $this, 'createTableCode' ) );
-        add_action( 'plugins_loaded', array( $this, 'createTableCommunes' ) );
-
-        // register_deactivation_hook(__FILE__,function () {
-        //     $table_name = 'communes';
-        //     $deleteTable = $this->connect()->prepare('DROP TABLE IF EXISTS '.$table_name.'');
-        //     $deleteTable->execute();
-        // });
-
-        // register_deactivation_hook(__FILE__,function () {
-        //     $table_name = 'shortcode';
-        //     $deleteTable = $this->connect()->prepare('DROP TABLE IF EXISTS '.$table_name.'');
-        //     $deleteTable->execute();
-        // });
-
-        
-
-
-    }
-
-    function ActivationProcessusEffacement(){
-        register_uninstall_hook( __FILE__, 'deleteTableCode' );
-    }
-     
-    function deleteTableCode(){
-        $table_name = 'communes';
-        $deleteTable = $this->connect()->prepare('DROP TABLE IF EXISTS '.$table_name.'');
-        $deleteTable->execute();        
-    }
-
-    function createTableCode(){
-        $newTable = $this->connect()->prepare('CREATE TABLE shortcode
-        (
-            id INT(6) PRIMARY KEY NOT NULL,
-            shortcode VARCHAR(30)
-        )');
-        $newTable->execute();
-    }
-
-    function createTableCommunes(){
-        $newTable = $this->connect()->prepare('CREATE TABLE communes
-        (
-            id INT(6) PRIMARY KEY NOT NULL,
-            code INT(6),
-            nom VARCHAR(30)
-        )');
-        $newTable->execute();
-    }
-}
-
-
-
-class Data extends Database{
-    public function __construct() {
-        add_action( 'plugins_loaded', array( $this, 'insert' ) );
-
-    }
-
-    function insert($code, $nom){
-        $ajouter = $this->connect()->prepare('INSERT INTO communes ( code, nom) VALUES (:code, :nom)');
-        $ajouter->bindParam(':code', $code); 
-        $ajouter->bindParam(':nom', $nom);
-        $ajouter->execute(); 
-        $ajouter->debugDumpParams();       
-    }
-
-
-    function curlAl(){
-        $curl = curl_init("https://geo.api.gouv.fr/communes");
-        curl_setopt($curl, CURLOPT_CAINFO,__DIR__.'/cert.cer' );
-        $communes = curl_exec($curl);
-        $communes = json_decode($communes, true);
-        foreach ($communes as $commune) {
-            $communesainserer = new Data;
-            $communesainserer->insert($commune['code'],$commune['nom']);
-        }
-        curl_close($curl);
-    }
-
-}
-    $wpdocsclassData = new Table();
-
-
 
     function cardStyles() {
         // pour importer une feuille css
@@ -139,4 +32,30 @@ class Data extends Database{
         
     }
     add_action('admin_print_styles', 'cardStyles');
+
+
+
+
+    // function curlAl(){
+    //     $curl = curl_init("https://geo.api.gouv.fr/communes");
+    //     curl_setopt($curl, CURLOPT_CAINFO,__DIR__.'/cert.cer' );
+    //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    //     $communes = curl_exec($curl);
+
+    //     if($communes === false){
+    //         var_dump(curl_error($curl));
+    //     }
+
+    //     else{
+    //         $communes = json_decode($communes, true);
+    //         $import = new Data;
+
+    //         foreach($communes as $commune){
+    //             $import->addDataCommune($commune['code'], $commune['nom']);
+    //         }
+    //     }
+    //     curl_close($curl);
+    // }
+
+    // add_action('plugins_loaded','curlAl');
 ?>

@@ -14,6 +14,7 @@
         width: 100%;
         margin: 2.5vh 0 !important;
     }
+
     label{
         width: 100%;
     }
@@ -42,7 +43,7 @@
 <section class="container MaxiBlocks">
     <div class="box">
         <div class="row rowAl">
-            <h1 class="titleAl">API</h1>
+            <h2 class="titleAl">API</h2>
             <div class="col-6">
                 <form action="">
                     <label>Récuperer votre API :
@@ -58,7 +59,7 @@
 <section class="container MaxiBlocks">
     <div class="box">
         <div class="row rowAl">
-            <h1 class="titleAl">Shortcode</h1>
+            <h2 class="titleAl">Shortcode</h2>
             <div class="col-6">
                 <form action="">
                     <label>Récuperer votre shortcode :
@@ -74,7 +75,7 @@
 <section class="container MaxiBlocks">
     <div class="box">
         <div class="row rowAl">
-            <h1 class="titleAl">Météo</h1>
+            <h2 class="titleAl">Météo</h2>
             <div class="col-6">
                 <form action="">
                     <label>Département :
