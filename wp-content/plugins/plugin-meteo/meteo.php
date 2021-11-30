@@ -73,9 +73,6 @@ function initFunction(){
     $query = "INSERT INTO communes ( code, codepostal, nom) VALUES ";
     foreach ($communes as $commune){
         foreach ($commune['codesPostaux'] as $codepostal){
-            $id = $commune['code'];
-            $code = $codepostal;                                
-            $nom = $commune['nom'];
         array_push($values, $commune['code'], $codepostal, $commune['nom']);
         $place_holders[] = "(%d, %d, %s)";
     }}

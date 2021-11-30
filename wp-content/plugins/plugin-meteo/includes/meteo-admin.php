@@ -16,22 +16,29 @@ require_once  __DIR__ . '/../Models/Data.php';
     input{
         width: 100%;
         margin: 2.5vh 0 !important;
+        border: 1px solid black !important;
+        border-radius: 5px !important;
+        padding: 0 !important;
+        padding-left: 0.75rem !important;
     }
 
     label{
         width: 100%;
     }
+
     .rowAl{
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
     }
+
     .box{
         min-height: max-content;
         background-color: #C0C0C015;
         box-shadow: #d9d7d7 3px 6px 14px;
     }
+
     .titleAl{
         margin-left: 5vw;
         margin-top: 2.5vh;
@@ -39,6 +46,12 @@ require_once  __DIR__ . '/../Models/Data.php';
     .MaxiBlocks{
         margin: 5vh auto !important;
     }
+
+    .btMeteo{
+        margin-bottom: 2rem;
+        border-radius: 10px !important;
+    }
+    
 </style>
 
 <body>
@@ -48,10 +61,11 @@ require_once  __DIR__ . '/../Models/Data.php';
         <div class="row rowAl">
             <h2 class="titleAl">API</h2>
             <div class="col-6">
-                <form action="">
+                <form method="POST" action="">
                     <label>Récuperer votre API :
-                        <input type="text">
+                        <input type="text" name="inputAPI">
                     </label>
+                    <button class="btMeteo" type="submit" name="btAPISend">chercher</button>
                 </form>                
             </div>
         </div>
@@ -64,10 +78,11 @@ require_once  __DIR__ . '/../Models/Data.php';
         <div class="row rowAl">
             <h2 class="titleAl">Shortcode</h2>
             <div class="col-6">
-                <form action="">
+                <form method="POST" action="">
                     <label>Récuperer votre shortcode :
-                        <input type="text">
+                        <input type="text" name="inputShortcode">
                     </label>
+                    <button class="btMeteo" type="submit" name="btShortcodeSend">chercher</button>
                 </form>                
             </div>
         </div>
@@ -80,61 +95,32 @@ require_once  __DIR__ . '/../Models/Data.php';
         <div class="row rowAl">
             <h2 class="titleAl">Météo</h2>
             <div class="col-6">
-                <form action="">
+                <form method="POST" action="">
                     <label>Département :
-                        <input type="text">
+                        <input type="text" name="inputDept">
                     </label>
                     <label for="">Ville :
-                        <input type="text">
+                        <input type="text" name="inputVille">
                     </label>
-                </form>                
+                    <button class="btMeteo" type="submit" name="btMeteoSend">chercher</button>
+                </form>   
             </div>
         </div>
     </div>
 </section>   
 
-<!-- <form action="" method="post">
-    <input type="submit" name="someAction" value="GO" />
-</form> -->
-
 <?php
-    // if(isset($_POST['someAction']))
-    // {
-    //     curlalaedin();
-    // }
-    
-    // function curlalaedin(){
-    //     $curl = curl_init("https://geo.api.gouv.fr/communes");
-    //     curl_setopt_array($curl, [
-    //             CURLOPT_CAINFO          => __DIR__ . DIRECTORY_SEPARATOR . 'cert.cer',
-    //             CURLOPT_RETURNTRANSFER  => true,
-    //     ]);
-    //     $communes = curl_exec($curl);
-    //     $communes = json_decode($communes, true);
-    
-    //     global $wpdb;
-    
-    //     $values = array();
-    //     $place_holders = array();
-    //     $query = "INSERT INTO communes ( code, codepostal, nom) VALUES ";
-    //     foreach ($communes as $commune){
-    //         foreach ($commune['codesPostaux'] as $codepostal){
-    //             $id = $commune['code'];
-    //             $code = $codepostal;                                
-    //             $nom = $commune['nom'];
-    //         array_push($values, $commune['code'], $codepostal, $commune['nom']);
-    //         $place_holders[] = "(%d, %d, %s)";
-    //     }}
-    //     $query .= implode( ', ', $place_holders );
-    //     $wpdb->query( $wpdb->prepare( "$query ", $values ) );
-    
-    //     curl_close($curl);   
-    // }
+
+if(isset($_POST['btAPISend'])){
+    echo'merci pour le click API';
+}
+if(isset($_POST['btShortcodeSend'])){
+    echo'merci pour le click Shortcode';
+}
+if(isset($_POST['btMeteoSend'])){
+    echo'merci pour le click Meteo';
+}
+
 ?>
 
 </body>
-
-<?php
-
-
-
