@@ -91,5 +91,50 @@ require_once  __DIR__ . '/../Models/Data.php';
             </div>
         </div>
     </div>
-</section>    
+</section>   
+
+<!-- <form action="" method="post">
+    <input type="submit" name="someAction" value="GO" />
+</form> -->
+
+<?php
+    // if(isset($_POST['someAction']))
+    // {
+    //     curlalaedin();
+    // }
+    
+    // function curlalaedin(){
+    //     $curl = curl_init("https://geo.api.gouv.fr/communes");
+    //     curl_setopt_array($curl, [
+    //             CURLOPT_CAINFO          => __DIR__ . DIRECTORY_SEPARATOR . 'cert.cer',
+    //             CURLOPT_RETURNTRANSFER  => true,
+    //     ]);
+    //     $communes = curl_exec($curl);
+    //     $communes = json_decode($communes, true);
+    
+    //     global $wpdb;
+    
+    //     $values = array();
+    //     $place_holders = array();
+    //     $query = "INSERT INTO communes ( code, codepostal, nom) VALUES ";
+    //     foreach ($communes as $commune){
+    //         foreach ($commune['codesPostaux'] as $codepostal){
+    //             $id = $commune['code'];
+    //             $code = $codepostal;                                
+    //             $nom = $commune['nom'];
+    //         array_push($values, $commune['code'], $codepostal, $commune['nom']);
+    //         $place_holders[] = "(%d, %d, %s)";
+    //     }}
+    //     $query .= implode( ', ', $place_holders );
+    //     $wpdb->query( $wpdb->prepare( "$query ", $values ) );
+    
+    //     curl_close($curl);   
+    // }
+?>
+
 </body>
+
+<?php
+
+
+

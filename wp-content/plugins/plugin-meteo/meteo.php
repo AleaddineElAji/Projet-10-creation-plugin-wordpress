@@ -41,7 +41,6 @@ function initFunction(){
     global $wpdb;
     $query ='CREATE TABLE shortcode
     (
-        id INT(6) PRIMARY KEY NOT NULL,
         shortcode VARCHAR(30)
     )';
     $wpdb->query($query);
@@ -51,42 +50,12 @@ function initFunction(){
     global $wpdb;
     $query = 'CREATE TABLE communes
     (
-        id INT(6) PRIMARY KEY NOT NULL,
         code INT(6),
+        codepostal INT(6),
         nom VARCHAR(30)
     )';
     $wpdb->query($query);
   }
-
-  // function curlalaedin(){
-  //   //Traitement des données
-  //   $curl = curl_init("https://geo.api.gouv.fr/communes");
-  //   curl_setopt($curl, CURLOPT_CAINFO,__DIR__.DIRECTORY_SEPARATOR.'/cert.cer' );
-  //   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  //   $communes = curl_exec($curl);
-  // // print_r($communes);
-  //   if($communes === false){
-  //     var_dump(curl_error($curl));
-  //   }else{
-  //     $communes = json_decode($communes, true);
-
-  //     global $wpdb;
-
-  //     $values = array();
-  //     $place_holders = array();
-      
-  //     $query = "INSERT INTO communes (code, nom) VALUES ";
-
-  //     foreach ( $communes as $key => $value ) {
-  //       array_push( $values, $value);
-  //       $place_holders[] = "('%d', '%s')";
-  //       // var_dump($value);
-  //     }
-  //     $query .= implode( ', ', $place_holders );
-  //     $wpdb->query( $wpdb->prepare( "$query ", $values ) );
-  //   }
-  //   curl_close($curl);  
-  // }
 
   function curlalaedin(){
     $curl = curl_init("https://geo.api.gouv.fr/communes");
@@ -99,12 +68,11 @@ function initFunction(){
 
     global $wpdb;
 
-    $table_name_communes ='communes';
     $values = array();
     $place_holders = array();
-    $query = "INSERT INTO $table_name_communes ( code, codepostal, nom) VALUES ";
+    $query = "INSERT INTO communes ( code, codepostal, nom) VALUES ";
     foreach ($communes as $commune){
-        foreach ($commune['codesPostaux'] as $codepostal) {
+        foreach ($commune['codesPostaux'] as $codepostal){
             $id = $commune['code'];
             $code = $codepostal;                                
             $nom = $commune['nom'];
@@ -114,14 +82,30 @@ function initFunction(){
     $query .= implode( ', ', $place_holders );
     $wpdb->query( $wpdb->prepare( "$query ", $values ) );
 
-    curl_close($curl);
-  }
-
+    curl_close($curl);   
+}
   createTableCode();
   createTableCommunes();
   curlalaedin();
 }
 
+function desactivation(){
+
+  function deleteDataTableCode(){
+    global $wpdb;
+    $query ='TRUNCATE TABLE shortcode';
+    $wpdb->query($query);
+  }
+
+  function deleteDataTableCommunes(){
+    global $wpdb;
+    $query = 'TRUNCATE TABLE communes';
+    $wpdb->query($query);
+  }
+
+  deleteDataTableCode();
+  deleteDataTableCommunes();
+}
 function uninstallFunction(){
 
   function deleteTableCode(){
@@ -140,6 +124,9 @@ function uninstallFunction(){
   deleteTableCommunes();
 }
 
+
 register_activation_hook( __FILE__, 'initFunction' );
+
+register_deactivation_hook( __FILE__, 'desactivation' );
 
 register_uninstall_hook( __FILE__, 'uninstallFunction' );
