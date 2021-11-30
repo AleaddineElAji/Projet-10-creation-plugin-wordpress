@@ -37,6 +37,18 @@ function meteo_page(){
 
 function initFunction(){
 
+
+  function createPage(){
+    $page_array = array(
+      'post_title' => 'Page météo',
+      'post_content' => 'page permettant de voir les résultats météo',
+      'post_status'  => 'publish',
+      'post_type'    => 'page',
+      'post_author'  => get_current_user_id(),
+  );
+  wp_insert_post($page_array);
+  }
+
   function createTableCode(){
     global $wpdb;
     $query ='CREATE TABLE shortcode
@@ -81,12 +93,20 @@ function initFunction(){
 
     curl_close($curl);   
 }
+
+
+  createPage();
   createTableCode();
   createTableCommunes();
   curlalaedin();
 }
 
 function desactivation(){
+
+  function desactivationPage(){
+    $ondoitsupprimerquoi = get_page_by_title('Page météo');
+    wp_delete_post($ondoitsupprimerquoi->ID, true);
+  }
 
   function deleteDataTableCode(){
     global $wpdb;
@@ -99,7 +119,8 @@ function desactivation(){
     $query = 'TRUNCATE TABLE communes';
     $wpdb->query($query);
   }
-
+  
+  desactivationPage();
   deleteDataTableCode();
   deleteDataTableCommunes();
 }

@@ -51,7 +51,7 @@ require_once  __DIR__ . '/../Models/Data.php';
         margin-bottom: 2rem;
         border-radius: 10px !important;
     }
-    
+
 </style>
 
 <body>
@@ -123,4 +123,46 @@ if(isset($_POST['btMeteoSend'])){
 
 ?>
 
+<!-- <script>
+        //Ajax
+    function ajax(url, params){
+        var httpRequest;
+        makeRequest(url, params);
+        function makeRequest(url, params){
+            httpRequest = new XMLHttpRequest();
+            if(!httpRequest){
+                console.log('Abandon: ( Impossible de créer unt instance de XMLHTTP');
+                return false;
+            }
+            httpRequest.onreadystatechange = alertContents;
+            httpRequest.open('POST', url);
+            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            httpRequest.send('params=' + encodeURIComponent(params));
+        }
+
+        function alertContents(){
+            try {
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        var response = JSON.parse(httpRequest.responseText);
+                        console.log(response);
+                    } else {
+                        console.log('Il y a eu un problème avec la requête.');
+                    }
+                }
+            }
+            catch(e){
+                console.log("Une exception s’est produite : " + e.description);
+            }
+        }
+    };
+    // Générateur de sélecteur de catégorie
+    ajax('/ajax/selectdepartement.php', [])
+    
+    
+</script> -->
+
 </body>
+
+
+
