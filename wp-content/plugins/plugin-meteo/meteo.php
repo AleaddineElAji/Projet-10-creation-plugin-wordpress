@@ -58,30 +58,68 @@ function initFunction(){
     $wpdb->query($query);
   }
 
+  // function curlalaedin(){
+  //   //Traitement des données
+  //   $curl = curl_init("https://geo.api.gouv.fr/communes");
+  //   curl_setopt($curl, CURLOPT_CAINFO,__DIR__.DIRECTORY_SEPARATOR.'/cert.cer' );
+  //   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  //   $communes = curl_exec($curl);
+  // // print_r($communes);
+  //   if($communes === false){
+  //     var_dump(curl_error($curl));
+  //   }else{
+  //     $communes = json_decode($communes, true);
+
+  //     global $wpdb;
+
+  //     $values = array();
+  //     $place_holders = array();
+      
+  //     $query = "INSERT INTO communes (code, nom) VALUES ";
+
+  //     foreach ( $communes as $key => $value ) {
+  //       array_push( $values, $value);
+  //       $place_holders[] = "('%d', '%s')";
+  //       // var_dump($value);
+  //     }
+  //     $query .= implode( ', ', $place_holders );
+  //     $wpdb->query( $wpdb->prepare( "$query ", $values ) );
+  //   }
+  //   curl_close($curl);  
+  // }
+
   function curlalaedin(){
-    //Traitement des données
     $curl = curl_init("https://geo.api.gouv.fr/communes");
-    curl_setopt($curl, CURLOPT_CAINFO,__DIR__.DIRECTORY_SEPARATOR.'/cert.cer' );
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt_array($curl, [
+            CURLOPT_CAINFO          => __DIR__ . DIRECTORY_SEPARATOR . 'cert.cer',
+            CURLOPT_RETURNTRANSFER  => true,
+    ]);
     $communes = curl_exec($curl);
-  // print_r($communes);
-    if($communes === false){
-      var_dump(curl_error($curl));
-    }else{
-      $communes = json_decode($communes, true);
-      global $wpdb;
-      // $delete = new Data();
-      // $delete->deleteData();
-      // for ($i=0; $i < count($communes) ; $i++) {   
-      //     $import->addData($communes[$i]['code'], $communes[$i]['nom']);
-      // }
-      foreach($communes as $commune){
-        // $wpdb->insert($commune['code'], $commune['nom']);
-        $wpdb->insert('communes', array('code' => $commune['code'],'nom' => $commune['nom'],));
-      }
-    }
-    curl_close($curl);  
+    $communes = json_decode($communes, true);
+
+    global $wpdb;
+
+    $table_name_communes ='communes';
+    $values = array();
+    $place_holders = array();
+    $query = "INSERT INTO $table_name_communes ( code, codepostal, nom) VALUES ";
+    foreach ($communes as $commune){
+        foreach ($commune['codesPostaux'] as $codepostal) {
+            $id = $commune['code'];
+            $code = $codepostal;                                
+            $nom = $commune['nom'];
+        array_push($values, $commune['code'], $codepostal, $commune['nom']);
+        $place_holders[] = "(%d, %d, %s)";
+    }}
+    $query .= implode( ', ', $place_holders );
+    $wpdb->query( $wpdb->prepare( "$query ", $values ) );
+
+    curl_close($curl);
   }
+
+  createTableCode();
+  createTableCommunes();
+  curlalaedin();
 }
 
 function uninstallFunction(){
@@ -97,6 +135,9 @@ function uninstallFunction(){
     $query = 'DROP TABLE communes';
     $wpdb->query($query);
   }
+
+  deleteTableCode();
+  deleteTableCommunes();
 }
 
 register_activation_hook( __FILE__, 'initFunction' );
