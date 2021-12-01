@@ -78,7 +78,7 @@ require_once  __DIR__ . '/../Models/Data.php';
 <section class="container MaxiBlocks">
     <div class="box">
         <div class="row rowAl">
-            <h2 class="titleAl">Météo</h2>
+            <h2 class="titleAl">Lieu de la recherche</h2>
             <div class="col-6">
                 <label>Département :
                     <input type="text" name="depart" id="zipCode">
@@ -115,7 +115,6 @@ require_once  __DIR__ . '/../Models/Data.php';
         </div>
     </div>
 </section>
-
 
 <script>
     //Ajax
