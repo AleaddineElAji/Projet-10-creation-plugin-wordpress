@@ -107,22 +107,19 @@ require_once  __DIR__ . '/../Models/Data.php';
     </div>
 </section>
 
-<form action="">
 
-
-
-<input type="text" name="depart" id="depart">
+<input type="text" name="depart" id="zipCode">
 
 <select name="departement" id="lesdepartements" class="form-control" hidden>
     <option value="" disabled selected>Choisir un département</option>
 </select>
 
-</form>
+
 
 
 <script>
     //Ajax
-    let zipCode = document.getElementById('depart')
+    let zipCode = document.getElementById('zipCode')
     let departement = document.getElementById('lesdepartements')
 
     function showDepartmentList() {
