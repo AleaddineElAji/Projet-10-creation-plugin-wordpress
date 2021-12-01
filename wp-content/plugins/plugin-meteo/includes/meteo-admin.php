@@ -72,24 +72,6 @@ require_once  __DIR__ . '/../Models/Data.php';
     </div>
 </section>
 
-
-<section class="container MaxiBlocks">
-    <div class="box">
-        <div class="row rowAl">
-            <h2 class="titleAl">Shortcode</h2>
-            <div class="col-6">
-                <form method="POST" action="">
-                    <label>Récuperer votre shortcode :
-                        <input type="text" name="inputShortcode">
-                    </label>
-                    <button class="btMeteo" type="submit" name="btShortcodeSend">chercher</button>
-                </form>                
-            </div>
-        </div>
-    </div>
-</section>
-
-
 <section class="container MaxiBlocks">
     <div class="box">
         <div class="row rowAl">
@@ -109,59 +91,67 @@ require_once  __DIR__ . '/../Models/Data.php';
     </div>
 </section>   
 
-<?php
+<section class="container MaxiBlocks">
+    <div class="box">
+        <div class="row rowAl">
+            <h2 class="titleAl">Shortcode</h2>
+            <div class="col-6">
+                <form method="POST" action="">
+                    <label>Récuperer votre shortcode :
+                        <input type="text" name="inputShortcode">
+                    </label>
+                    <button class="btMeteo" type="submit" name="btShortcodeSend">chercher</button>
+                </form>                
+            </div>
+        </div>
+    </div>
+</section>
 
-if(isset($_POST['btAPISend'])){
-    echo'merci pour le click API';
-}
-if(isset($_POST['btShortcodeSend'])){
-    echo'merci pour le click Shortcode';
-}
-if(isset($_POST['btMeteoSend'])){
-    echo'merci pour le click Meteo';
-}
+<form action="">
 
-?>
 
-<!-- <script>
-        //Ajax
-    function ajax(url, params){
-        var httpRequest;
-        makeRequest(url, params);
-        function makeRequest(url, params){
-            httpRequest = new XMLHttpRequest();
-            if(!httpRequest){
-                console.log('Abandon: ( Impossible de créer unt instance de XMLHTTP');
-                return false;
-            }
-            httpRequest.onreadystatechange = alertContents;
-            httpRequest.open('POST', url);
-            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            httpRequest.send('params=' + encodeURIComponent(params));
-        }
 
-        function alertContents(){
-            try {
-                if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                    if (httpRequest.status === 200) {
-                        var response = JSON.parse(httpRequest.responseText);
-                        console.log(response);
-                    } else {
-                        console.log('Il y a eu un problème avec la requête.');
-                    }
+<input type="text" name="depart" id="depart">
+
+<select name="departement" id="lesdepartements" class="form-control" hidden>
+    <option value="" disabled selected>Choisir un département</option>
+</select>
+
+</form>
+
+
+<script>
+    //Ajax
+    let zipCode = document.getElementById('depart')
+    let departement = document.getElementById('lesdepartements')
+
+    function showDepartmentList() {
+    departement.innerHTML = ""
+    if (zipCode.value != "") {
+        departement.style = "display:block!important"
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var departements = JSON.parse(this.response)
+                console.log(departements)
+                document.getElementById("lesdepartements").innerHTML += '<option value="">Selecionnez une région</option>'
+                for (let i = 0; i < departements.length; i++) {
+                    document.getElementById("lesdepartements").innerHTML += '<option value="' + departements[i].nom + '">' + departements[i].nom + '</option>'
                 }
             }
-            catch(e){
-                console.log("Une exception s’est produite : " + e.description);
-            }
         }
-    };
-    // Générateur de sélecteur de catégorie
-    ajax('/ajax/selectdepartement.php', [])
-    
-    
-</script> -->
+        xmlhttp.open("GET", "../wp-content/plugins/plugin-meteo/includes/search.php?depart=" + zipCode.value)
+        xmlhttp.send()
+    } else {
+        departement.style = "display:none!important"
+    }
+}
 
+zipCode.addEventListener('change', function () {
+    showDepartmentList()
+})
+
+</script>
 </body>
 
 

@@ -30,13 +30,16 @@ function pluginLink()
     );
 }
 
+
+
 //Maintenant génération de l'intérieur de la page admin quand le slug est appelé
 function meteo_page(){
   require_once("includes/meteo-admin.php");
 }
 
-function initFunction(){
 
+
+function initFunction(){
 
   function createPage(){
     $page_array = array(
@@ -51,8 +54,9 @@ function initFunction(){
 
   function createTableCode(){
     global $wpdb;
-    $query ='CREATE TABLE shortcode
+    $query ='CREATE TABLE IF NOT EXISTS '.$wpdb->prefix.'shortcode
     (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         shortcode VARCHAR(30)
     )';
     $wpdb->query($query);
@@ -60,8 +64,9 @@ function initFunction(){
 
   function createTableCommunes(){
     global $wpdb;
-    $query = 'CREATE TABLE communes
+    $query = 'CREATE TABLE IF NOT EXISTS '.$wpdb->prefix.'communes
     (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         code INT(6),
         codepostal INT(6),
         nom VARCHAR(30)
@@ -82,7 +87,7 @@ function initFunction(){
 
     $values = array();
     $place_holders = array();
-    $query = "INSERT INTO communes ( code, codepostal, nom) VALUES ";
+    $query = 'INSERT INTO '.$wpdb->prefix.'communes ( code, codepostal, nom) VALUES ';
     foreach ($communes as $commune){
         foreach ($commune['codesPostaux'] as $codepostal){
         array_push($values, $commune['code'], $codepostal, $commune['nom']);
@@ -110,16 +115,16 @@ function desactivation(){
 
   function deleteDataTableCode(){
     global $wpdb;
-    $query ='TRUNCATE TABLE shortcode';
+    $query ='TRUNCATE TABLE '.$wpdb->prefix.'shortcode';
     $wpdb->query($query);
   }
 
   function deleteDataTableCommunes(){
     global $wpdb;
-    $query = 'TRUNCATE TABLE communes';
+    $query = 'TRUNCATE TABLE '.$wpdb->prefix.'communes';
     $wpdb->query($query);
   }
-  
+
   desactivationPage();
   deleteDataTableCode();
   deleteDataTableCommunes();
@@ -128,13 +133,13 @@ function uninstallFunction(){
 
   function deleteTableCode(){
     global $wpdb;
-    $query ='DROP TABLE shortcode';
+    $query ='DROP TABLE '.$wpdb->prefix.'shortcode';
     $wpdb->query($query);
   }
 
   function deleteTableCommunes(){
     global $wpdb;
-    $query = 'DROP TABLE communes';
+    $query = 'DROP TABLE '.$wpdb->prefix.'communes';
     $wpdb->query($query);
   }
 
