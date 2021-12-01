@@ -52,6 +52,9 @@ require_once  __DIR__ . '/../Models/Data.php';
         border-radius: 10px !important;
     }
 
+    .wp-core-ui select {
+        max-width: 100% !important;
+    }
 </style>
 
 <body>
@@ -77,19 +80,25 @@ require_once  __DIR__ . '/../Models/Data.php';
         <div class="row rowAl">
             <h2 class="titleAl">Météo</h2>
             <div class="col-6">
-                <form method="POST" action="">
-                    <label>Département :
-                        <input type="text" name="inputDept">
-                    </label>
-                    <label for="">Ville :
-                        <input type="text" name="inputVille">
-                    </label>
-                    <button class="btMeteo" type="submit" name="btMeteoSend">chercher</button>
-                </form>   
+                <label>Département :
+                    <input type="text" name="depart" id="zipCode">
+                </label>
+                <label for="">Ville :
+                    <select name="departement" id="lesdepartements" class="form-control" hidden>
+                        <option value="" disabled selected>Choisir un département</option>
+                    </select>
+                </label>
+                <button class="btMeteo" type="submit" name="btMeteoSend">chercher</button>
             </div>
         </div>
     </div>
 </section>   
+
+
+
+
+
+
 
 <section class="container MaxiBlocks">
     <div class="box">
@@ -108,15 +117,6 @@ require_once  __DIR__ . '/../Models/Data.php';
 </section>
 
 
-<input type="text" name="depart" id="zipCode">
-
-<select name="departement" id="lesdepartements" class="form-control" hidden>
-    <option value="" disabled selected>Choisir un département</option>
-</select>
-
-
-
-
 <script>
     //Ajax
     let zipCode = document.getElementById('zipCode')
@@ -131,7 +131,7 @@ require_once  __DIR__ . '/../Models/Data.php';
             if (this.readyState == 4 && this.status == 200) {
                 var departements = JSON.parse(this.response)
                 console.log(departements)
-                document.getElementById("lesdepartements").innerHTML += '<option value="">Selecionnez une région</option>'
+                document.getElementById("lesdepartements").innerHTML += '<option value="">Selecionnez une commune</option>'
                 for (let i = 0; i < departements.length; i++) {
                     document.getElementById("lesdepartements").innerHTML += '<option value="' + departements[i].nom + '">' + departements[i].nom + '</option>'
                 }

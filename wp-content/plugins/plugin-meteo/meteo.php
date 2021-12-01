@@ -147,6 +147,47 @@ function uninstallFunction(){
   deleteTableCommunes();
 }
 
+// function meteo_shortcode($atts) {
+
+// }
+// //Enregistre les shortcodes du plugin
+// function meteo_register_shortcode() {
+//   add_shortcode( 'clients', 'meteo_shortcode' );
+// }
+
+function lienCode($parametres) {
+  extract(
+    shortcode_atts(
+                 array(
+                      'ancre' => '',
+                      'lien' => '',
+                      'titre' => '',
+                      'rel' => ''
+                       ),
+                       $parametres
+                   )
+         );
+
+$lienBalise = '<a href="'.$lien.'" title="'.$titre.'" rel="'.$rel.'">'.$ancre.'</a>';
+
+return $lienBalise;
+};
+add_shortcode('lienP', 'lienCode');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 register_activation_hook( __FILE__, 'initFunction' );
 
