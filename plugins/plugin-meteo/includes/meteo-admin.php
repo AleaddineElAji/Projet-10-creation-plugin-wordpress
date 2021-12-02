@@ -52,6 +52,14 @@ require_once  __DIR__ . '/../Models/Data.php';
         width: 100%;
     }
 
+    #labelDepart{
+        display: none;
+    }
+
+    select{
+        margin-top: 1rem;
+    }
+
     .rowAl{
         display: flex;
         justify-content: center;
@@ -77,7 +85,7 @@ require_once  __DIR__ . '/../Models/Data.php';
         margin: 5vh auto !important;
     }
 
-    .btMeteo{
+    .btS{
         margin-bottom: 2rem;
         border-radius: 10px !important;
     }
@@ -85,37 +93,77 @@ require_once  __DIR__ . '/../Models/Data.php';
     .wp-core-ui select {
         max-width: 100% !important;
     }
+
+    #btUpdate{
+        display: none;
+    }
+
+    #btInsert{
+     display: none;   
+    }
+
 </style>
 
 <body>
 <?php
-    function affichageKey(){
+    // function affichageKey(){
+    //     global $wpdb;
+    //     $query = 'SELECT option_value FROM alacs_options WHERE option_name = "APIKey"';
+    //     $result = $wpdb->get_var($query);
+    //     echo $result;
+    // }
+
+    function getApiKey(){
         global $wpdb;
         $query = 'SELECT option_value FROM alacs_options WHERE option_name = "APIKey"';
         $result = $wpdb->get_var($query);
-        echo $result;
+        return $result;
+    }
+
+    function insertKey($param){
+        global $wpdb;
+        $query = 'INSERT INTO '.$wpdb->prefix.'options (option_name, option_value,autoload) VALUES ("APIKey","'.$param.'","yes")';
+        $result = $wpdb->query($query);
     }
 
     function updateKey($param){
         global $wpdb;
-        $query = 'UPDATE alacs_options SET option_value='.$param.' WHERE option_name = "APIKey";';
+        $query = 'UPDATE alacs_options SET option_value="'.$param.'" WHERE option_name = "APIKey";';
         $wpdb->get_var($query);
     }
 ?>
+
+
+<?php
+getApiKey();
+if(isset($_POST['update-apikey'])){
+    updateKey($_POST['inputInsertApi']);
+}else if(isset($_POST['register-apikey'])){
+    insertKey($_POST['inputInsertApi']);
+}
+getApiKey();
+$getAPI = getApiKey();
+?>
+
 
 <section class="container MaxiBlocks">
     <div class="box">
         <div class="row rowAl">
             <h2 class="titleAl">API</h2>
             <div class="col-6">
-                <label>Récuperer votre clef d'API :
-                    <input id="inputAPI" type="text" name="inputAPI" value='<?php affichageKey();?>'>
-                </label>
-                <button id="btAPI" class="btMeteo" name="btAPISend" class="js-copy" data-target="#tocopy">recuperer votre clef d'API</button>
+                <form action="" method="POST">
+                    <label>Récuperer votre clé d'API :
+                        <input id="inputAPI" type="text" name="inputInsertApi" value="<?php echo $getAPI ?>">
+                    </label> 
+                        <input type="submit" name="<?php echo !empty(getApiKey())?'update-apikey':'register-apikey'; ?>" id="api-register" class="btn btn-primary mt-3" value="<?php echo !empty(getApiKey())?'Modifier votre clé':'Enregistrer votre clé'; ?>"> 
+                    
+                </form>
             </div>
         </div>
     </div>
 </section>
+
+
 
 <section class="container MaxiBlocks">
     <div class="box">
@@ -125,7 +173,7 @@ require_once  __DIR__ . '/../Models/Data.php';
                 <label>Département :
                     <input type="text" name="depart" id="zipCode">
                 </label>
-                <label for="">Ville :
+                <label id="labelDepart" for="">Ville :
                     <select name="departement" id="lesdepartements" class="form-control" hidden>
                         <option value="" disabled selected>Choisir un département</option>
                     </select>
@@ -152,7 +200,7 @@ require_once  __DIR__ . '/../Models/Data.php';
                         <label for="radioTemp">vent</label>
                     </div>
                 </div>
-                <button class="btMeteo" type="submit" name="btMeteoSend">chercher</button>
+                <button class="btS" type="submit" name="btMeteoSend">chercher</button>
             </div>
         </div>
     </div>
@@ -168,7 +216,7 @@ require_once  __DIR__ . '/../Models/Data.php';
                     <label>Récuperer votre shortcode :
                         <input type="text" name="inputShortcode">
                     </label>
-                    <button class="btMeteo" type="submit" name="btShortcodeSend">Récuperer votre shortcode</button>
+                    <button class="btS" type="submit" name="btShortcodeSend">Récuperer votre shortcode</button>
                 </form>                
             </div>
         </div>
@@ -197,12 +245,14 @@ require_once  __DIR__ . '/../Models/Data.php';
 <script>
     //Ajax
     let zipCode = document.getElementById('zipCode')
+    let labelDepart = document.getElementById('labelDepart')
     let departement = document.getElementById('lesdepartements')
     let btRadio = document.getElementById('btRadio')
 
     function showDepartmentList() {
     departement.innerHTML = ""
     if (zipCode.value != "") {
+        labelDepart.style = "display:block!important"
         departement.style = "display:block!important"
         btRadio.style = "display:flex!important"
         let xmlhttp = new XMLHttpRequest();
@@ -219,6 +269,7 @@ require_once  __DIR__ . '/../Models/Data.php';
         xmlhttp.open("GET", "../wp-content/plugins/plugin-meteo/includes/search.php?depart=" + zipCode.value)
         xmlhttp.send()
     } else {
+        labelDepart.style = "display:none!important"
         departement.style = "display:none!important"
         btRadio.style = "display:none!important"
     }
@@ -245,10 +296,4 @@ zipCode.addEventListener('change', function () {
 
 </script>
 
-
-
-
 </body>
-
-
-
