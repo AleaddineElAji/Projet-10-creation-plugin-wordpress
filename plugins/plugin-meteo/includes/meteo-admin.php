@@ -36,7 +36,7 @@ require_once  __DIR__ . '/../Models/Data.php';
 
     #btRadio{
         justify-content: center;
-        display: none;
+        display: flex;
     }
 
 
@@ -131,6 +131,19 @@ require_once  __DIR__ . '/../Models/Data.php';
         $query = 'UPDATE alacs_options SET option_value="'.$param.'" WHERE option_name = "APIKey";';
         $wpdb->get_var($query);
     }
+
+    function getDataWeather($ville,$APIKey){
+
+        $curl = curl_init("api.openweathermap.org/data/2.5/weather?q=$ville&appid=$APIKey");
+        curl_setopt_array($curl, [
+                CURLOPT_RETURNTRANSFER  => true,
+        ]);
+        $data = curl_exec($curl);
+        $data = json_decode($data, true);
+        curl_close($curl);
+      
+        var_dump($data);
+    }
 ?>
 
 
@@ -143,6 +156,7 @@ if(isset($_POST['update-apikey'])){
 }
 getApiKey();
 $getAPI = getApiKey();
+
 ?>
 
 
@@ -153,10 +167,9 @@ $getAPI = getApiKey();
             <div class="col-6">
                 <form action="" method="POST">
                     <label>Récuperer votre clé d'API :
-                        <input id="inputAPI" type="text" name="inputInsertApi" value="<?php echo $getAPI ?>">
+                        <input id="inputAPI" type="text" name="inputInsertApi" value="<?php echo $getAPI ?>" required>
                     </label> 
-                        <input type="submit" name="<?php echo !empty(getApiKey())?'update-apikey':'register-apikey'; ?>" id="api-register" class="btn btn-primary mt-3" value="<?php echo !empty(getApiKey())?'Modifier votre clé':'Enregistrer votre clé'; ?>"> 
-                    
+                        <button type="submit" class="btS" name="<?php echo !empty(getApiKey())?'update-apikey':'register-apikey'; ?>"><?php echo !empty(getApiKey())?'Modifier votre clé':'Enregistrer votre clé'; ?></button> 
                 </form>
             </div>
         </div>
@@ -178,7 +191,23 @@ $getAPI = getApiKey();
                         <option value="" disabled selected>Choisir un département</option>
                     </select>
                 </label>
-                <div id="btRadio" class="row">
+            </div>
+        </div>
+    </div>
+</section>   
+
+
+<section class="container MaxiBlocks">
+    <div class="box">
+        <div class="row rowAl">
+            <h2 class="titleAl">Shortcode</h2>
+            <div class="col-6">
+                <form method="POST" action="">
+                    <label>Récuperer votre shortcode :
+                        <input type="text" name="inputShortcode">
+                    </label>
+
+                    <div id="btRadio" class="row">
                     <div class="checkboxAl">
                         <input type="checkbox" id="radioTemp" name="radioTemp" value="temperature"checked>
                         <label for="radioTemp">temperature</label>
@@ -200,22 +229,7 @@ $getAPI = getApiKey();
                         <label for="radioTemp">vent</label>
                     </div>
                 </div>
-                <button class="btS" type="submit" name="btMeteoSend">chercher</button>
-            </div>
-        </div>
-    </div>
-</section>   
 
-
-<section class="container MaxiBlocks">
-    <div class="box">
-        <div class="row rowAl">
-            <h2 class="titleAl">Shortcode</h2>
-            <div class="col-6">
-                <form method="POST" action="">
-                    <label>Récuperer votre shortcode :
-                        <input type="text" name="inputShortcode">
-                    </label>
                     <button class="btS" type="submit" name="btShortcodeSend">Récuperer votre shortcode</button>
                 </form>                
             </div>
@@ -254,7 +268,6 @@ $getAPI = getApiKey();
     if (zipCode.value != "") {
         labelDepart.style = "display:block!important"
         departement.style = "display:block!important"
-        btRadio.style = "display:flex!important"
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -271,7 +284,6 @@ $getAPI = getApiKey();
     } else {
         labelDepart.style = "display:none!important"
         departement.style = "display:none!important"
-        btRadio.style = "display:none!important"
     }
 }
 
@@ -293,7 +305,20 @@ zipCode.addEventListener('change', function () {
 //   }, 1000)
 // }
 
+selectOne = document.getElementById("lesdepartements").value;
+optionOne = document.getElementsByTagName("option").value;
+
+console.log(optionOne)
 
 </script>
+
+<?php
+
+echo '<pre>';
+getDataWeather("champagnole",$getAPI);
+echo '</pre>';
+
+?>
+
 
 </body>

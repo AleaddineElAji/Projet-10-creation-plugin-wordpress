@@ -162,8 +162,30 @@ function uninstallFunction(){
   deleteTableCommunes();
 }
 
+
+
+function shortcode_bienvenue($ville){
+
+return $ville ;
+}
+add_shortcode('meteo', 'shortcode_bienvenue');
+
+
+
+
 register_activation_hook( __FILE__, 'initFunction' );
 
 register_deactivation_hook( __FILE__, 'desactivation' );
 
 register_uninstall_hook( __FILE__, 'uninstallFunction' );
+
+
+//Creéation d'un shortcode simple avec argument
+function weatherAl($parametre){
+  $prenom = $parametre['prenom'];
+  $age = $parametre['age'];
+
+  $rendu = "Bonjour je m'appelle $prenom et j'ai $age";
+  return $rendu;
+}
+add_shortcode('meteo', 'weatherAl');
