@@ -102,17 +102,15 @@ require_once  __DIR__ . '/../Models/Data.php';
      display: none;   
     }
 
+    #lesdepartements{
+
+        margin-bottom: 2rem;
+    }
+
 </style>
 
 <body>
 <?php
-    // function affichageKey(){
-    //     global $wpdb;
-    //     $query = 'SELECT option_value FROM alacs_options WHERE option_name = "APIKey"';
-    //     $result = $wpdb->get_var($query);
-    //     echo $result;
-    // }
-
     function getApiKey(){
         global $wpdb;
         $query = 'SELECT option_value FROM alacs_options WHERE option_name = "APIKey"';
@@ -133,7 +131,6 @@ require_once  __DIR__ . '/../Models/Data.php';
     }
 
     function getDataWeather($ville,$APIKey){
-
         $curl = curl_init("api.openweathermap.org/data/2.5/weather?q=$ville&appid=$APIKey");
         curl_setopt_array($curl, [
                 CURLOPT_RETURNTRANSFER  => true,
@@ -141,7 +138,7 @@ require_once  __DIR__ . '/../Models/Data.php';
         $data = curl_exec($curl);
         $data = json_decode($data, true);
         curl_close($curl);
-      
+
         var_dump($data);
     }
 ?>
@@ -187,9 +184,12 @@ $getAPI = getApiKey();
                     <input type="text" name="depart" id="zipCode">
                 </label>
                 <label id="labelDepart" for="">Ville :
-                    <select name="departement" id="lesdepartements" class="form-control" hidden>
-                        <option value="" disabled selected>Choisir un département</option>
-                    </select>
+                    <form action="" method="POST" >
+                        <select name="departement" id="lesdepartements" class="form-control" hidden>
+                            <option value="" disabled selected>Choisir un département</option>
+                        </select>
+                        <button class="btS" type="submit" name="btDepart">Récuperer votre shortcode</button>
+                    </form>
                 </label>
             </div>
         </div>
@@ -207,28 +207,28 @@ $getAPI = getApiKey();
                         <input type="text" name="inputShortcode">
                     </label>
 
-                    <div id="btRadio" class="row">
-                    <div class="checkboxAl">
-                        <input type="checkbox" id="radioTemp" name="radioTemp" value="temperature"checked>
-                        <label for="radioTemp">temperature</label>
-                    </div>
-                    <div class="checkboxAl">
-                        <input type="checkbox" id="radioPrec" name="radioPrec" value="precipitations">
-                        <label for="radioTemp">précipitations</label>
-                    </div>
-                    <div class="checkboxAl">
-                        <input type="checkbox" id="radioNuag" name="radioNuag" value="nuages">
-                        <label for="radioTemp">nuages</label>
-                    </div>
-                    <div class="checkboxAl">
-                        <input type="checkbox" id="radioPress" name="radioPress" value="pression">
-                        <label for="radioTemp">pression</label>
-                    </div>
-                    <div class="checkboxAl">
-                        <input type="checkbox" id="radioVent" name="radioVent" value="vent">
-                        <label for="radioTemp">vent</label>
-                    </div>
-                </div>
+                    <!-- <div id="btRadio" class="row">
+                        <div class="checkboxAl">
+                            <input type="checkbox" id="radioTemp" name="radioTemp" value="temperature"checked>
+                            <label for="radioTemp">temperature</label>
+                        </div>
+                        <div class="checkboxAl">
+                            <input type="checkbox" id="radioPrec" name="radioPrec" value="precipitations">
+                            <label for="radioTemp">précipitations</label>
+                        </div>
+                        <div class="checkboxAl">
+                            <input type="checkbox" id="radioNuag" name="radioNuag" value="nuages">
+                            <label for="radioTemp">nuages</label>
+                        </div>
+                        <div class="checkboxAl">
+                            <input type="checkbox" id="radioPress" name="radioPress" value="pression">
+                            <label for="radioTemp">pression</label>
+                        </div>
+                        <div class="checkboxAl">
+                            <input type="checkbox" id="radioVent" name="radioVent" value="vent">
+                            <label for="radioTemp">vent</label>
+                        </div>
+                    </div> -->
 
                     <button class="btS" type="submit" name="btShortcodeSend">Récuperer votre shortcode</button>
                 </form>                
@@ -315,10 +315,23 @@ console.log(optionOne)
 <?php
 
 echo '<pre>';
-getDataWeather("champagnole",$getAPI);
+$paramSpecial = isset($_POST["departement"]) ? getDataWeather($_POST["departement"],$getAPI): '';
 echo '</pre>';
 
+// //Creéation d'un shortcode simple avec argument
+// function weatherAl($parametre){
+//     $temperature = $parametre['temp'];
+//     $ressenti = $parametre['feels_like'];
+//     $pression = $parametre['pressure'];
+//     $humidite = $parametre['humidity'];
+  
+//     $rendu = $temperature.$ressenti.$pression.$humidite;
+//     return $rendu;
+// }
+
+// add_shortcode('meteo', 'weatherAl');
+
+
+
 ?>
-
-
 </body>

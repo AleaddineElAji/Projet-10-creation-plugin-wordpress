@@ -15,6 +15,7 @@
 
 require_once  __DIR__ . '/Models/Data.php'; 
 require_once  __DIR__ . '/Controllers/meteoController.php'; 
+// require_once  __DIR__ . '/includes/meteo-admin.php'; 
 
 //Ajout de lien de notre plugin dans le menu latéral
 add_action( 'admin_menu', 'pluginLink' );
@@ -164,11 +165,11 @@ function uninstallFunction(){
 
 
 
-function shortcode_bienvenue($ville){
+// function shortcode_bienvenue($ville){
 
-return $ville ;
-}
-add_shortcode('meteo', 'shortcode_bienvenue');
+// return $ville ;
+// }
+// add_shortcode('meteo', 'shortcode_bienvenue');
 
 
 
@@ -180,12 +181,18 @@ register_deactivation_hook( __FILE__, 'desactivation' );
 register_uninstall_hook( __FILE__, 'uninstallFunction' );
 
 
+
 //Creéation d'un shortcode simple avec argument
 function weatherAl($parametre){
-  $prenom = $parametre['prenom'];
-  $age = $parametre['age'];
+  // $prenom = $parametre['prenom'];
+  // $age = $parametre['age'];
 
-  $rendu = "Bonjour je m'appelle $prenom et j'ai $age";
-  return $rendu;
+  // $rendu = "Bonjour je m'appelle $prenom et j'ai $age";
+  // return $rendu;
+
+
+
 }
 add_shortcode('meteo', 'weatherAl');
+
+
