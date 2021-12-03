@@ -19,10 +19,6 @@ require_once  __DIR__ . '/Controllers/meteoController.php';
 //Ajout de lien de notre plugin dans le menu latéral
 add_action( 'admin_menu', 'pluginLink' );
 
-//Creation d'un shortcode
-add_shortcode('meteo', 'weatherAl');
-
- 
 function pluginLink()
 {
       add_menu_page(
@@ -148,7 +144,15 @@ function uninstallFunction(){
   deleteTableCommunes();
 }
 
+//Creéation d'un shortcode simple avec argument
+function welcomewho($where){
+  $s = isset($where["ville"]) ? $where["ville"]: '';
+  $test = getDataWeather($s,getApiKey());
+  require_once  __DIR__ . '/View/viewPage.php'; 
 
+  return var_dump($test);
+}
+add_shortcode('meteo', 'welcomewho');
 
 register_activation_hook( __FILE__, 'initFunction' );
 

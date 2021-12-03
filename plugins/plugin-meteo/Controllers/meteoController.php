@@ -31,21 +31,7 @@ function getDataWeather($ville,$APIKey){
     return $data;
 }
 
-
-function getCleanData($dataJson){
-    $temperature = $dataJson['name'];
-    $ressenti = $dataJson['main']['feels_like'] - 273.15;
-    $humidite = $dataJson['main']['humidity'];
-    $tempMin = $dataJson['main']['temp_min'] - 273.15;
-    $tempMax = $dataJson['main']['temp_max'] - 273.15;
-    $vitesseVent = $dataJson['wind']['speed'];
-    $descVent = $dataJson['weather']['0']['description'];
-    $icons = $dataJson['weather']['0']['icon'];
-
-    $allDatas = array($temperature,$ressenti,$humidite,$tempMin,$tempMax,$vitesseVent,$descVent,$icons);
-    return $allDatas;
-}
-
-function weatherAl($dataJson){
-    getCleanData($dataJson);
+function genereCode($ville){
+    $modele = "[meteo ville=".$ville."]";
+    return $modele;
 }

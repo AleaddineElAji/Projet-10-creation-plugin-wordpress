@@ -57,7 +57,7 @@ $getAPI = getApiKey();
             <h2 class="titleAl">Shortcode</h2>
             <div class="col-6">
                 <label>Récuperer votre shortcode :
-                    <input type="text" name="inputShortcode" id="copyMe">
+                    <input type="text" name="inputShortcode" id="copyMe" value="<?= $dataAladinien = isset($_POST["departement"]) ? (genereCode($_POST["departement"])) : '' ?>">
                 </label>
                 <button id="clickAl" class="btS btn btn-primary" type="submit" name="btShortcodeSend">Récuperer votre shortcode</button>
             </div>

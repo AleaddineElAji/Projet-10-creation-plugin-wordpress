@@ -12,11 +12,12 @@ echo'</style>';
 <?php
 
 echo '<pre>';
+
 $dataDecode = isset($_POST["departement"]) ? getDataWeather($_POST["departement"],$getAPI): '';
-$dataClean = isset($_POST["departement"]) ? var_dump(getCleanData($dataDecode)): '';
-$dataDisplay = isset($_POST["departement"]) ? var_dump(weatherAl($dataClean)): '';
+$dataAladinien = isset($_POST["departement"]) ? (genereCode($_POST["departement"])) : '';
+
+var_dump($dataDecode);
 
 echo '</pre>';
-
 
 ?>
