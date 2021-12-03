@@ -35,8 +35,6 @@ function meteo_page(){
   require_once("includes/meteo-admin.php");
 }
 
-
-
 function initFunction(){
 
   function createPage(){
@@ -148,9 +146,10 @@ function uninstallFunction(){
 function welcomewho($where){
   $s = isset($where["ville"]) ? $where["ville"]: '';
   $test = getDataWeather($s,getApiKey());
+  
   require_once  __DIR__ . '/View/viewPage.php'; 
 
-  return var_dump($test);
+  return $test;
 }
 add_shortcode('meteo', 'welcomewho');
 

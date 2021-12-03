@@ -10,7 +10,6 @@ $getAPI = getApiKey();
 
 ?>
 
-
 <section class="container MaxiBlocks">
     <div class="box">
         <div class="row rowAl">
@@ -111,3 +110,5 @@ zipCode.addEventListener('change', function () {
 })
 
 </script>
+
+<?php global $wpdb;var_dump($wpdb)?>
