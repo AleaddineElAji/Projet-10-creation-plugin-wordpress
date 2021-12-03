@@ -15,10 +15,14 @@
 
 require_once  __DIR__ . '/Models/Data.php'; 
 require_once  __DIR__ . '/Controllers/meteoController.php'; 
-// require_once  __DIR__ . '/includes/meteo-admin.php'; 
+$vuePage =require_once  __DIR__ . '/Views/viewPage.php'; 
 
 //Ajout de lien de notre plugin dans le menu latéral
 add_action( 'admin_menu', 'pluginLink' );
+
+//Creation d'un shortcode
+add_shortcode('meteo', 'weatherAl');
+
  
 function pluginLink()
 {
@@ -30,8 +34,6 @@ function pluginLink()
         'meteo_page'//Le callBack
     );
 }
-
-
 
 //Maintenant génération de l'intérieur de la page admin quand le slug est appelé
 function meteo_page(){
@@ -100,22 +102,6 @@ function initFunction(){
     curl_close($curl);   
 }
 
-// function APIKey($longueur){
-
-//   $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-//   $longueurMax = strlen($caracteres);
-//   $chaineAleatoire = '';
-
-//   for ($i = 0; $i < $longueur; $i++){
-//   $chaineAleatoire .= $caracteres[rand(0, $longueurMax - 1)];
-//   }
-
-//     global $wpdb;
-//     $query = 'INSERT INTO '.$wpdb->prefix.'options (option_name, option_value,autoload) VALUES ("APIKey","'.$chaineAleatoire.'","yes")';
-//     $wpdb->query($query);
-// }
-
-  // APIKey(30);
   createPage();
   createTableCode();
   createTableCommunes();
@@ -165,34 +151,8 @@ function uninstallFunction(){
 
 
 
-// function shortcode_bienvenue($ville){
-
-// return $ville ;
-// }
-// add_shortcode('meteo', 'shortcode_bienvenue');
-
-
-
-
 register_activation_hook( __FILE__, 'initFunction' );
 
 register_deactivation_hook( __FILE__, 'desactivation' );
 
 register_uninstall_hook( __FILE__, 'uninstallFunction' );
-
-
-
-//Creéation d'un shortcode simple avec argument
-function weatherAl($parametre){
-  // $prenom = $parametre['prenom'];
-  // $age = $parametre['age'];
-
-  // $rendu = "Bonjour je m'appelle $prenom et j'ai $age";
-  // return $rendu;
-
-
-
-}
-add_shortcode('meteo', 'weatherAl');
-
-

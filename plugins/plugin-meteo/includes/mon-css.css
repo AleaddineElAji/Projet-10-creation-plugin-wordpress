@@ -1,0 +1,91 @@
+.box input{
+    width: 100%;
+    margin: 2.5vh 0 !important;
+    border: 1px solid black !important;
+    border-radius: 5px !important;
+    padding: 0 !important;
+    padding-left: 0.75rem !important;
+}
+
+#btRadio input{
+    width: 25px !important;
+    height: 25px !important;
+    margin: 2.5vh 0 !important;
+    border: 1px solid black !important;
+    border-radius: 5px !important;
+    padding: 0 !important;
+    padding-left: 0.75rem !important;  
+}
+
+#btRadio{
+    justify-content: center;
+    display: flex;
+}
+
+
+input[type=checkbox]:before {
+    display: none !important;
+}
+
+input[type=checkbox]:after {
+    left: 8px !important;
+}
+
+label{
+    width: 100%;
+}
+
+#labelDepart{
+    display: none;
+}
+
+select{
+    margin-top: 1rem;
+}
+
+.rowAl{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.box{
+    min-height: max-content;
+    background-color: #C0C0C015;
+    box-shadow: #d9d7d7 3px 6px 14px;
+}
+
+.checkboxAl{
+    width: fit-content;
+}
+
+.titleAl{
+    margin-left: 5vw;
+    margin-top: 2.5vh;
+}
+.MaxiBlocks{
+    margin: 5vh auto !important;
+}
+
+.btS{
+    margin-bottom: 2rem;
+    border-radius: 10px !important;
+}
+
+.wp-core-ui select {
+    max-width: 100% !important;
+}
+
+#btUpdate{
+    display: none;
+}
+
+#btInsert{
+ display: none;   
+}
+
+#lesdepartements{
+
+    margin-bottom: 2rem;
+}

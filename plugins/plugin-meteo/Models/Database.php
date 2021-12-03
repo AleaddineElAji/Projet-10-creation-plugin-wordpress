@@ -3,7 +3,6 @@
 
         public function connect(){ //fonction de connextion à la base
              try{
-                
              
              global $wpdb;
              $servername = $wpdb->dbhost;
