@@ -15,7 +15,6 @@
 
 require_once  __DIR__ . '/Models/Data.php'; 
 require_once  __DIR__ . '/Controllers/meteoController.php'; 
-$vuePage =require_once  __DIR__ . '/Views/viewPage.php'; 
 
 //Ajout de lien de notre plugin dans le menu latéral
 add_action( 'admin_menu', 'pluginLink' );

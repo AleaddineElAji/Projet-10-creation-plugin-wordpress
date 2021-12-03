@@ -74,3 +74,40 @@ document.getElementById("clickAl").addEventListener('click', function(e) {
     document.execCommand("copy")
 })
 </script>
+
+<script>
+    //Ajax
+    let zipCode = document.getElementById('zipCode')
+    let labelDepart = document.getElementById('labelDepart')
+    let departement = document.getElementById('lesdepartements')
+    let btRadio = document.getElementById('btRadio')
+
+    function showDepartmentList() {
+    departement.innerHTML = ""
+    if (zipCode.value != "") {
+        labelDepart.style = "display:block!important"
+        departement.style = "display:block!important"
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var departements = JSON.parse(this.response)
+                console.log(departements)
+                document.getElementById("lesdepartements").innerHTML += '<option value="">Selecionnez une commune</option>'
+                for (let i = 0; i < departements.length; i++) {
+                    document.getElementById("lesdepartements").innerHTML += '<option value="' + departements[i].nom + '">' + departements[i].nom + '</option>'
+                }
+            }
+        }
+        xmlhttp.open("GET", "../wp-content/plugins/plugin-meteo/includes/search.php?depart=" + zipCode.value)
+        xmlhttp.send()
+    } else {
+        labelDepart.style = "display:none!important"
+        departement.style = "display:none!important"
+    }
+}
+
+zipCode.addEventListener('change', function () {
+    showDepartmentList()
+})
+
+</script>
